@@ -1,5 +1,6 @@
 package pl.lejdi.proxy
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -33,18 +34,21 @@ class MainActivity : AppCompatActivity() {
                                 Text("Input port")
                             }
                         )
-                        Button(onClick = {
-                            if (viewModel.started.value) {
+                        if(viewModel.started.value){
+                            Button(onClick = {
                                 endListening()
-                            } else {
-                                startListening()
-                            }
-
-                        }) {
-                            if(viewModel.started.value){
+                                MainService.started = false
+                                viewModel.started.value = false
+                            }) {
                                 Text("STOP")
                             }
-                            else{
+                        }
+                        else{
+                            Button(onClick = {
+                                startListening()
+                                MainService.started = true
+                                viewModel.started.value = true
+                            }) {
                                 Text("START")
                             }
                         }
@@ -54,11 +58,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun startListening() {
-        viewModel.forwardData()
+        MainService.inputPort = viewModel.inputPort.value
+        startForegroundService(Intent(this, MainService::class.java))
     }
 
     private fun endListening() {
-        viewModel.stopForwarding()
+        stopService(Intent(this, MainService::class.java))
     }
 }
