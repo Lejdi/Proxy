@@ -33,20 +33,6 @@ class MainActivity : AppCompatActivity() {
                                 Text("Input port")
                             }
                         )
-                        OutlinedTextField(
-                            value = viewModel.outputPort.value.toString(),
-                            onValueChange = { newValue -> viewModel.onOutputPortChange(newValue.toInt()) },
-                            label = {
-                                Text("Output port")
-                            }
-                        )
-                        OutlinedTextField(
-                            value = viewModel.outputIp.value,
-                            onValueChange = { newValue -> viewModel.onOutputIpChange(newValue) },
-                            label = {
-                                Text("Output IP")
-                            }
-                        )
                         Button(onClick = {
                             if (viewModel.started.value) {
                                 endListening()

@@ -1,5 +1,7 @@
 package pl.lejdi.proxy
 
+import android.net.LocalSocket
+import android.net.LocalSocketAddress
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -30,25 +32,9 @@ class MainViewModel : ViewModel() {
         this._inputPort.value = new
     }
 
-    private val _outputPort: MutableState<Int> =
-        mutableStateOf(10001)
-    val outputPort: State<Int> get() = _outputPort
-
-    fun onOutputPortChange(new : Int){
-        this._outputPort.value = new
-    }
-
-    private val _outputIp: MutableState<String> =
-        mutableStateOf("127.0.0.1")
-    val outputIp: State<String> get() = _outputIp
-
-    fun onOutputIpChange(new : String){
-        this._outputIp.value = new
-    }
-
     private var job : Job? = null
     private var inputSocket : ServerSocket? = null
-    private var outputSocket : Socket? = null
+    private var outputSocket : LocalSocket? = null
 
     fun forwardData() {
         try{
@@ -58,7 +44,8 @@ class MainViewModel : ViewModel() {
                 withContext(Dispatchers.IO){
                     try {
                         inputSocket = ServerSocket(_inputPort.value)
-                        outputSocket = Socket(_outputIp.value, _outputPort.value)
+                        outputSocket = LocalSocket()
+                        outputSocket?.connect(LocalSocketAddress("chrome_devtools_remote"))
 
                         while(true){
                             val client = inputSocket?.accept()
