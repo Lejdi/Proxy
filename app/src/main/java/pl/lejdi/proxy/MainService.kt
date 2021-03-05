@@ -64,6 +64,7 @@ class MainService : Service() {
                     }
                     while(true){
                         val client = inputSocket?.accept()
+                        println("INPUT SOCKET CONNECTED")
                         val scanner = Scanner(client?.inputStream)
                         while (scanner.hasNextLine()) {
                             val line = scanner.nextLine()
@@ -89,8 +90,10 @@ class MainService : Service() {
     private fun tryConnecting() : Boolean{
         return try{
             outputSocket?.connect(LocalSocketAddress("chrome_devtools_remote"))
+            println("chrome_devtools_remote CONNECTED")
             true
         } catch (e : Exception){
+            e.printStackTrace()
             false
         }
     }
