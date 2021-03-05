@@ -25,7 +25,7 @@ class MainViewModel : ViewModel() {
     val started: State<Boolean> get() = _started
 
     private val _inputPort: MutableState<Int> =
-        mutableStateOf(10000)
+        mutableStateOf(9222)
     val inputPort: State<Int> get() = _inputPort
 
     fun onInputPortChange(new : Int){
