@@ -6,17 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import pl.lejdi.proxy.ui.theme.ProxyTheme
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel : MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,18 +26,29 @@ class MainActivity : AppCompatActivity() {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
+                        OutlinedTextField(
+                            value = viewModel.inputPort.value.toString(),
+                            onValueChange = { newValue -> viewModel.onInputPortChange(newValue.toInt()) })
+                        OutlinedTextField(
+                            value = viewModel.outputPort.value.toString(),
+                            onValueChange = { newValue -> viewModel.onOutputPortChange(newValue.toInt()) })
+                        OutlinedTextField(
+                            value = viewModel.outputIp.value,
+                            onValueChange = { newValue -> viewModel.onOutputIpChange(newValue) })
                         Button(onClick = {
-                            if(viewModel.started.value){
+                            if (viewModel.started.value) {
                                 endListening()
-                            }
-                            else{
+                            } else {
                                 startListening()
                             }
 
                         }) {
-                            Text(
-                                "CLICK"
-                            )
+                            if(viewModel.started.value){
+                                Text("STOP")
+                            }
+                            else{
+                                Text("START")
+                            }
                         }
                     }
                 }
@@ -48,11 +56,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun startListening(){
+    private fun startListening() {
         viewModel.forwardData()
     }
 
-    private fun endListening(){
+    private fun endListening() {
         viewModel.stopForwarding()
     }
 }
