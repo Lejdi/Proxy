@@ -28,13 +28,25 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         OutlinedTextField(
                             value = viewModel.inputPort.value.toString(),
-                            onValueChange = { newValue -> viewModel.onInputPortChange(newValue.toInt()) })
+                            onValueChange = { newValue -> viewModel.onInputPortChange(newValue.toInt()) },
+                            label = {
+                                Text("Input port")
+                            }
+                        )
                         OutlinedTextField(
                             value = viewModel.outputPort.value.toString(),
-                            onValueChange = { newValue -> viewModel.onOutputPortChange(newValue.toInt()) })
+                            onValueChange = { newValue -> viewModel.onOutputPortChange(newValue.toInt()) },
+                            label = {
+                                Text("Output port")
+                            }
+                        )
                         OutlinedTextField(
                             value = viewModel.outputIp.value,
-                            onValueChange = { newValue -> viewModel.onOutputIpChange(newValue) })
+                            onValueChange = { newValue -> viewModel.onOutputIpChange(newValue) },
+                            label = {
+                                Text("Output IP")
+                            }
+                        )
                         Button(onClick = {
                             if (viewModel.started.value) {
                                 endListening()
